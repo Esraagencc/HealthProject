@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace Health.Entity
     public class Doctor
     {
         public int Id { get; set; }
+
+        [DisplayName("Adı")]
         public string Name { get; set; }
         public string Branch { get; set; }
         public string ImageUrl { get; set; }

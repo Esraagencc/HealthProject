@@ -1,3 +1,6 @@
+using AutoMapper;
+using Health.BLL.Abstract;
+using Health.BLL.DTOs.DoctorDTO;
 using HealthProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,6 +9,7 @@ namespace HealthProject.Controllers
 {
     public class HomeController : Controller
     {
+       
 
         public IActionResult Index()
         {
@@ -15,7 +19,7 @@ namespace HealthProject.Controllers
         {
             return View();
         }
-        public IActionResult Doctors()
+        public IActionResult Doctor()
         {
             return View();
         }

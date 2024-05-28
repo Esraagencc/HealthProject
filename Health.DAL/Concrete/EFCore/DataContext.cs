@@ -16,6 +16,5 @@ namespace Health.DAL.Concrete.EFCore
         }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<Slider> Sliders { get; set; }
     }
 }
