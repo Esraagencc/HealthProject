@@ -19,7 +19,7 @@ namespace HealthProject.Controllers
         {
             return View();
         }
-        public IActionResult Doctor()
+        public IActionResult Doctors()
         {
             return View();
         }

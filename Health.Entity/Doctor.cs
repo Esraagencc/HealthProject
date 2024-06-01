@@ -12,9 +12,11 @@ namespace Health.Entity
     {
         public int Id { get; set; }
 
-        [DisplayName("Adı")]
+        [DisplayName("Ad Soyad")]
         public string Name { get; set; }
+        [DisplayName("Branş")]
         public string Branch { get; set; }
+        [DisplayName("Resim")]
         public string ImageUrl { get; set; }
         public bool Status { get; set; }
     }

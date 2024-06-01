@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Silme</h1>
-
-<h3>Silmek istediginize eminmisiniz?</h3>
+<h3>Silmek İstediğinize Emin Misiniz?</h3>
 <div>
-    <h4>Doctor</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -30,17 +27,11 @@
         <dd class = "col-sm-10">
             <img src="~/img/doctors/@Model.ImageUrl" alt="" style=" width: 60px;">
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Sil" class="btn btn-danger" /> |
         <a asp-action="Index">Geri Dön</a>
     </form>
 </div>
