@@ -12,9 +12,6 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 
 
-builder.Services.AddScoped<IAboutService, AboutManager>();
-builder.Services.AddScoped<IAboutDal, EfCoreAboutDal>();
-
 builder.Services.AddScoped<IDoctorDal, EfCoreDoctorDal>();
 builder.Services.AddScoped<IDoctorService, DoctorManager>();
 

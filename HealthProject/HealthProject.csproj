@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewComponents\About\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Shared\Components\_AdminHeaderViewComponentPartial\Default.cshtml" />
     <None Include="wwwroot\admin\.github\codeql\codeql-config.yml" />
     <None Include="wwwroot\admin\.github\CONTRIBUTING.md" />

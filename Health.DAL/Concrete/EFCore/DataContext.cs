@@ -14,7 +14,7 @@ namespace Health.DAL.Concrete.EFCore
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-D68FUN4; Database=Health; Integrated Security=true; TrustServerCertificate=True;");
         }
-        public DbSet<About> Abouts { get; set; }
+       
         public DbSet<Doctor> Doctors { get; set; }
     }
 }

@@ -16,9 +16,6 @@ namespace HealthProject.ViewComponents.Dashboard
         public IViewComponentResult Invoke()
         {
             ViewBag.DoctorCount = _doctorService.GetAllDoctors().Count();
-            //ViewBag.LastProductPrice = _statisticService.LastProductPrice();
-            //ViewBag.TopCityByProductCount = _statisticService.TopCityByProductCount();
-            //ViewBag.TopProductTypeByProductCount = _statisticService.TopProductTypeByProductCount();
             return View();
         }
     }
