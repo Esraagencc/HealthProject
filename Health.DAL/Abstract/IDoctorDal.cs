@@ -10,5 +10,10 @@ namespace Health.DAL.Abstract
 {
     public interface IDoctorDal:IRepository<Doctor>
     {
+
+        Doctor GetDoctorById(int id);
+
+        IEnumerable<Doctor> GetDoctorAllBranch();
+
     }
 }

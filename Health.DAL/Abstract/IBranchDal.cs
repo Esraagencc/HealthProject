@@ -10,6 +10,6 @@ namespace Health.DAL.Abstract
     public interface IBranchDal:IRepository<Branch>
     {
 
-        IQueryable<Branch> GetAllBrach();
+        IQueryable<Branch> GetAllBranch();
     }
 }

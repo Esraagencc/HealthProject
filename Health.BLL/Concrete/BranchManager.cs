@@ -3,6 +3,7 @@ using Health.DAL.Abstract;
 using Health.Entity;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -32,11 +33,6 @@ namespace Health.BLL.Concrete
         public IEnumerable<Branch> GetAll(Expression<Func<Branch, bool>> filter = null)
         {
             return _branchDal.GetAll();
-        }
-
-        public IQueryable<Branch> GetAllBrach()
-        {
-            return _branchDal.GetAllBrach();
         }
 
         public Branch GetById(int id)

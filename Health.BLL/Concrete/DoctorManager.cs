@@ -32,12 +32,17 @@ namespace Health.BLL.Concrete
 
         public IEnumerable<Doctor> GetAllDoctors()
         {
-            return _doctorDal.GetAll();
+            return _doctorDal.GetDoctorAllBranch();
+        }
+
+        public Doctor ExistingDoctor(int id)
+        {
+            return _doctorDal.Get(id);
         }
 
         public Doctor GetDoctor(int id)
         {
-            return _doctorDal.Get(id);
+            return _doctorDal.GetDoctorById(id);
         }
 
         public void UpdateDoctor(Doctor doctorDto)

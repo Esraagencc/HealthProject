@@ -12,6 +12,7 @@ namespace Health.BLL.Abstract
     public interface IDoctorService
     {
         Doctor GetDoctor(int id);
+        Doctor ExistingDoctor(int id);
         IEnumerable<Doctor> GetAllDoctors();
         IEnumerable<Doctor> FindDoctors(Expression<Func<Doctor, bool>> predicate);
         void AddDoctor(Doctor doctorDto);

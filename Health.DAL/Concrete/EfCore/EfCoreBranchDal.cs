@@ -14,7 +14,7 @@ namespace Health.DAL.Concrete.EfCore
             _context = dataContext;
         }
 
-        public IQueryable<Branch> GetAllBrach()
+        public IQueryable<Branch> GetAllBranch()
         {
             return _context.Branchs.AsNoTracking();
         }

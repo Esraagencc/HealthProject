@@ -1,6 +1,7 @@
 ﻿using Health.DAL.Abstract;
 using Health.Entity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +12,5 @@ namespace Health.BLL.Abstract
 {
     public interface IBranchService : IRepositoryService<Branch>
     {
-        IQueryable<Branch> GetAllBrach();
     }
 }

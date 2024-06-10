@@ -1,43 +1,47 @@
-﻿@model Health.Entity.Doctor
-
+﻿
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+@model dynamic
+
 <h4>Doktor Güncelle</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="Id" />
+        <form  asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="Id"  value="@Model.Doctor.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label value="@Model.Doctor.Name" class="control-label"></label>
+                <input name="Name" value="@Model.Doctor.Name" class="form-control" />
+                @* <span asp-validation-for="@Model.Doctor.Name" class="text-danger"></span> *@
             </div>
             <div class="form-group">
-                <label asp-for="Branch" class="control-label"></label>
-                <input asp-for="Branch" class="form-control" />
-                <span asp-validation-for="Branch" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" type="file" name="file" class="form-control" />
-                <span asp-validation-for="ImagePath" class="text-danger"></span>
 
-                <img src="~/uploads/@Model.ImagePath" alt="" style=" width: 60px;">
+                <label  class="control-label"></label>
+                <select name="BranchId" class="form-control">
+                    <option value="@Model.Doctor.BranchId"> @Model.Doctor.Branch.BranchName </option>
+                    @foreach (var item in Model.Branches)
+                    {
+                        <option value="@item.Id"> @item.BranchName </option>
+                    }
+                </select>
+                @* <span asp-validation-for="BranchId" class="text-danger"></span> *@
+            </div>
+            <div class="form-group">
+                <label name="@Model.Doctor.ImagePath" class="control-label"></label>
+                <input name="@Model.Doctor.ImagePath" type="file" name="file" class="form-control"  />
+                @* <span asp-validation-for="@Model.Doctor.ImagePath" class="text-danger"></span> *@
+                <img src="~/uploads/@Model.Doctor.ImagePath" alt="" style="width: 60px;">
             </div>
             <div class="form-group form-check">
-              @*   <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label> *@
+                <!-- Bu kısım isteğe bağlı olarak yeniden eklenebilir -->
             </div>
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
             </div>
-
         </form>
     </div>
 </div>
@@ -45,3 +49,4 @@
 <div>
     <a asp-action="Index">Geri Dön</a>
 </div>
+

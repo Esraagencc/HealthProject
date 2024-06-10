@@ -1,6 +1,7 @@
 ﻿using Health.BLL.Abstract;
 using Health.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 
 namespace HealthProject.Controllers
@@ -16,26 +17,27 @@ namespace HealthProject.Controllers
             _branchService = branchService;
         }
 
-
         public IActionResult Index()
         {
-            var doctor = _doctorService.GetAllDoctors();
-
-            return View(doctor);
-        }
-
-
-        public IActionResult Create()
-        {
-            var branchs = _branchService.GetAllBrach();
-            var doctor = new Doctor();
+            var doctors = _doctorService.GetAllDoctors();
 
             dynamic myModel = new ExpandoObject();
-            myModel.Branches = branchs; 
-            myModel.Doctor = doctor;
+            myModel.Doctors = doctors;
+
             return View(myModel);
         }
 
+        public IActionResult Create()
+        {
+            var branches = _branchService.GetAll();
+
+            //ViewBag.Branches = new SelectList(branches, "Id", "Name");
+
+            dynamic myModel = new ExpandoObject();
+            myModel.Branches = branches;
+
+            return View(myModel);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -43,7 +45,7 @@ namespace HealthProject.Controllers
         {
             if (file == null || file.Length == 0)
             {
-                return BadRequest("No file uploaded.");
+                return BadRequest("Dosya bulunamadı.");
             }
 
             var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
@@ -68,7 +70,6 @@ namespace HealthProject.Controllers
 
                 _doctorService.AddDoctor(doctor);
                 return RedirectToAction(nameof(Index));
-
             }
             catch (Exception ex)
             {
@@ -77,90 +78,74 @@ namespace HealthProject.Controllers
                 ModelState.AddModelError("", "An error occurred while uploading the file. Please try again.");
             }
 
+            var branches = _branchService.GetAll();
+            ViewBag.Branches = new SelectList(branches, "Id", "Name");
             return View(doctor);
         }
 
-
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var doctor = _doctorService.GetDoctor(id.Value);
+            var doctor = _doctorService.GetDoctor(id);
             if (doctor == null)
             {
                 return NotFound();
             }
-            return View(doctor);
-        }
 
+            var branches = _branchService.GetAll();
+
+            dynamic myModel = new ExpandoObject();
+            myModel.Doctor = doctor;
+            myModel.Branches = branches;
+
+
+            //ViewBag.Branches = new SelectList(branches, "Id", "Name", doctor.BranchId);
+
+            return View(myModel);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormFile file)
+        public IActionResult Edit(Doctor doctor, IFormFile file)
         {
-
-            var existingDoctor = _doctorService.GetDoctor(id);
+            var existingDoctor = _doctorService.ExistingDoctor(doctor.Id);
 
             if (existingDoctor == null)
-            {
                 return NotFound();
-            }
 
-            if (file != null && file.Length > 0)
+            try
             {
-                var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-
-                if (!Directory.Exists(uploadsFolderPath))
+                if (file != null && file.Length > 0)
                 {
-                    Directory.CreateDirectory(uploadsFolderPath);
-                }
+                    var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
 
-                var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
-                var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+                    var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
+                    var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
 
-                try
-                {
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
-                    // Set the new file path
                     existingDoctor.ImagePath = uniqueFileName;
                 }
-                catch (Exception ex)
-                {
-                    // Log the error (uncomment the line below after adding a logger)
-                    // _logger.LogError(ex, "File upload failed.");
-                    ModelState.AddModelError("", "An error occurred while uploading the file. Please try again.");
-                    return View(existingDoctor);
-                }
-            }
-            else
-            {
-                // Retain the existing image path if no new file is uploaded
-                existingDoctor.ImagePath = existingDoctor.ImagePath;
-            }
 
-            existingDoctor.Status = true;
+               
+                existingDoctor.Name = doctor.Name;
+                existingDoctor.Status = true;
+                existingDoctor.BranchId = doctor.BranchId;
 
-            try
-            {
                 _doctorService.UpdateDoctor(existingDoctor);
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                // Handle exceptions if any
-                // _logger.LogError(ex, "Update failed.");
-                ModelState.AddModelError("", "An error occurred while updating the doctor. Please try again.");
+                return Ok(ex.Message);
             }
-
-
-            return View(existingDoctor);
         }
 
         public IActionResult Delete(int? id)
@@ -191,7 +176,5 @@ namespace HealthProject.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }
