@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Branch)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Branch)
             </td>
             <td>
-                    <img src="~/img/doctors/@item.ImageUrl" alt="" style=" width: 60px;">
+                    <img src="~/uploads/@item.ImagePath" alt="" style=" width: 60px;">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)

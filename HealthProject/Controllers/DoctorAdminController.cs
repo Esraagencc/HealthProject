@@ -1,48 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Health.DAL.Concrete.EFCore;
+﻿using Health.BLL.Abstract;
 using Health.Entity;
-using Health.BLL.Abstract;
+using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace HealthProject.Controllers
 {
     public class DoctorAdminController : Controller
     {
         private readonly IDoctorService _doctorService;
+        private readonly IBranchService _branchService;
 
-        public DoctorAdminController(IDoctorService doctorService)
+        public DoctorAdminController(IDoctorService doctorService, IBranchService branchService)
         {
             _doctorService = doctorService;
+            _branchService = branchService;
         }
 
 
         public IActionResult Index()
         {
-            return View(_doctorService.GetAllDoctors());
-        }
+            var doctor = _doctorService.GetAllDoctors();
 
+            return View(doctor);
+        }
 
 
         public IActionResult Create()
         {
-            return View();
+            var branchs = _branchService.GetAllBrach();
+            var doctor = new Doctor();
+
+            dynamic myModel = new ExpandoObject();
+            myModel.Branches = branchs; 
+            myModel.Doctor = doctor;
+            return View(myModel);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Doctor doctor)
+        public IActionResult Create(Doctor doctor, IFormFile file)
         {
-            if (ModelState.IsValid)
+            if (file == null || file.Length == 0)
             {
+                return BadRequest("No file uploaded.");
+            }
+
+            var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+            if (!Directory.Exists(uploadsFolderPath))
+            {
+                Directory.CreateDirectory(uploadsFolderPath);
+            }
+
+            var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
+            var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+
+            try
+            {
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                doctor.ImagePath = uniqueFileName; // Save only the file name, not the full path
+                doctor.Status = true;
+
                 _doctorService.AddDoctor(doctor);
                 return RedirectToAction(nameof(Index));
+
             }
+            catch (Exception ex)
+            {
+                // Log the error (uncomment the line below after adding a logger)
+                // _logger.LogError(ex, "File upload failed.");
+                ModelState.AddModelError("", "An error occurred while uploading the file. Please try again.");
+            }
+
             return View(doctor);
         }
 
@@ -65,20 +99,68 @@ namespace HealthProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Doctor doctor)
+        public IActionResult Edit(int id, IFormFile file)
         {
-            if (id != doctor.Id)
+
+            var existingDoctor = _doctorService.GetDoctor(id);
+
+            if (existingDoctor == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (file != null && file.Length > 0)
             {
-                _doctorService.UpdateDoctor(doctor);
+                var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
+                if (!Directory.Exists(uploadsFolderPath))
+                {
+                    Directory.CreateDirectory(uploadsFolderPath);
+                }
+
+                var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
+                var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+
+                try
+                {
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    // Set the new file path
+                    existingDoctor.ImagePath = uniqueFileName;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error (uncomment the line below after adding a logger)
+                    // _logger.LogError(ex, "File upload failed.");
+                    ModelState.AddModelError("", "An error occurred while uploading the file. Please try again.");
+                    return View(existingDoctor);
+                }
+            }
+            else
+            {
+                // Retain the existing image path if no new file is uploaded
+                existingDoctor.ImagePath = existingDoctor.ImagePath;
+            }
+
+            existingDoctor.Status = true;
+
+            try
+            {
+                _doctorService.UpdateDoctor(existingDoctor);
                 return RedirectToAction(nameof(Index));
             }
-            return View(doctor);
+            catch (Exception ex)
+            {
+                // Handle exceptions if any
+                // _logger.LogError(ex, "Update failed.");
+                ModelState.AddModelError("", "An error occurred while updating the doctor. Please try again.");
+            }
+
+
+            return View(existingDoctor);
         }
 
         public IActionResult Delete(int? id)
@@ -101,7 +183,7 @@ namespace HealthProject.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var doctor =  _doctorService.FindDoctors(x=>x.Id == id);
+            var doctor = _doctorService.FindDoctors(x => x.Id == id);
             if (doctor != null)
             {
                 _doctorService.DeleteDoctor(doctor.FirstOrDefault());

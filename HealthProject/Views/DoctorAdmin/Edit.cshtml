@@ -8,9 +8,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -22,20 +23,21 @@
                 <span asp-validation-for="Branch" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="ImagePath" class="control-label"></label>
+                <input asp-for="ImagePath" type="file" name="file" class="form-control" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
 
-                <img src="~/img/doctors/@Model.ImageUrl" alt="" style=" width: 60px;">
+                <img src="~/uploads/@Model.ImagePath" alt="" style=" width: 60px;">
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
+              @*   <label class="form-check-label">
                     <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
+                </label> *@
             </div>
             <div class="form-group">
-                <input type="submit" value="Güncelle" class="btn btn-primary" />
+                <input type="submit" value="Ekle" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>

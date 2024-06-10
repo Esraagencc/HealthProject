@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Health.DAL.Abstract
 {
-    public interface IRepository<T>
+    public interface IRepository<TEntity>
     {
-        T Get(int id);
-        IEnumerable<T> GetAll();
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        TEntity Get(int id);
+        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
     }
 }

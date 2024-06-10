@@ -14,10 +14,11 @@ namespace Health.Entity
 
         [DisplayName("Ad Soyad")]
         public string Name { get; set; }
-        [DisplayName("Branş")]
-        public string Branch { get; set; }
         [DisplayName("Resim")]
-        public string ImageUrl { get; set; }
+        public string ImagePath { get; set; }
         public bool Status { get; set; }
+
+        public int BranchId { get; set; }
+        public Branch Branch { get; set; }
     }
 }

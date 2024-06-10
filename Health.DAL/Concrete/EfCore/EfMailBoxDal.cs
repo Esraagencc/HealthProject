@@ -4,8 +4,7 @@ using Health.Entity;
 
 namespace Health.DAL.Concrete.EfCore
 {
-    public class EfCoreDoctorDal : EfCoreRepository<Doctor, DataContext>, IDoctorDal
+    public class EfMailBoxDal : EfCoreRepository<MailBox, DataContext> , IMailBoxDal
     {
-       
     }
 }

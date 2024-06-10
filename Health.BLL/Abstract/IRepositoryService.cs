@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Health.BLL.Abstract
 {
-    public interface IRepositoryService<T> where T : class
+    public interface IRepositoryService<T>
     {
-        List<T> GetAll(Expression<Func<T, bool>> filter = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null);
         T GetById(int id);
-
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
