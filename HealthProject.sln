@@ -5,11 +5,16 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthProject", "HealthProject\HealthProject.csproj", "{12902A62-59B2-4D1D-9434-66261DE037D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.BLL", "Health.BLL\Health.BLL.csproj", "{7DAC1ADE-40AC-4EC5-A278-0080EBEB0699}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Health.BLL", "Health.BLL\Health.BLL.csproj", "{7DAC1ADE-40AC-4EC5-A278-0080EBEB0699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.DAL", "Health.DAL\Health.DAL.csproj", "{65013FA6-8800-42EC-8EF9-40FFA7CB79E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Health.DAL", "Health.DAL\Health.DAL.csproj", "{65013FA6-8800-42EC-8EF9-40FFA7CB79E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Entity", "Health.Entity\Health.Entity.csproj", "{1EDF77E0-B152-4798-B47D-8B14C7CB51A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Health.Entity", "Health.Entity\Health.Entity.csproj", "{1EDF77E0-B152-4798-B47D-8B14C7CB51A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database BackUp", "Database BackUp", "{44C0D174-A69C-4A16-91D9-8F30737F4FA0}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\Health.bak = ..\..\..\..\..\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\Health.bak
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
